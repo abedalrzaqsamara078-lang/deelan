@@ -1,38 +1,66 @@
 /**
  * =============================================================================
  * Forever With You — Dedicated to Deelan ❤️
- * Ultra-Smooth, Zero-Lag, 120 FPS Generative Canvas & Audio Art
- * =============================================================================
- * Optimized for:
- * - 100% Zero-Lag & Anti-Freeze under rapid clicking
- * - Batched Canvas 2D path rendering (reduced from 22,000 draw calls to 3!)
- * - Offscreen pre-cached glowing sprites (ZERO runtime shadowBlur stalls)
- * - Critically damped second-order harmonic spring for buttery click swell
- * - Spatially choreographed floating ruby hearts & celestial poetry whispers
+ * Interactive Romantic Story Engine & 120 FPS Silky Beating Heart
  * =============================================================================
  */
 
 (function () {
   'use strict';
 
-  // Elements
+  // DOM Elements
   const canvas = document.getElementById('heartCanvas');
   const ctx = canvas.getContext('2d', { alpha: false });
   const ambientGlow = document.getElementById('ambientGlow');
+  const romanticHeader = document.getElementById('romanticHeader');
+  const romanticFooter = document.getElementById('romanticFooter');
+  const storyContainer = document.getElementById('storyContainer');
+
+  // Story Screens
+  const screenIntro = document.getElementById('screenIntro');
+  const screenStage1 = document.getElementById('screenStage1');
+  const screenStage2 = document.getElementById('screenStage2');
+  const screenStage3 = document.getElementById('screenStage3');
+  const screenClimax = document.getElementById('screenClimax');
+
+  // Buttons
+  const btnStartJourney = document.getElementById('btnStartJourney');
+  const btnSkipToHeart = document.getElementById('btnSkipToHeart');
+  const btnNextStage1 = document.getElementById('btnNextStage1');
+  const btnNextStage2 = document.getElementById('btnNextStage2');
+  const btnNextStage3 = document.getElementById('btnNextStage3');
+  const btnAcceptRoses = document.getElementById('btnAcceptRoses');
+  const btnReplayStory = document.getElementById('btnReplayStory');
   const musicToggleBtn = document.getElementById('musicToggleBtn');
   const musicBtnLabel = document.getElementById('musicBtnLabel');
 
-  // Romantic Color Palette
+  // Stage Viewports & HUDs
+  const itemsStage1 = document.getElementById('itemsStage1');
+  const counterStage1 = document.getElementById('counterStage1');
+  const whisperStage1 = document.getElementById('whisperStage1');
+
+  const itemsStage2 = document.getElementById('itemsStage2');
+  const counterStage2 = document.getElementById('counterStage2');
+  const whisperStage2 = document.getElementById('whisperStage2');
+
+  const goldenKeyItem = document.getElementById('goldenKeyItem');
+  const gateLeft = document.getElementById('gateLeft');
+  const gateRight = document.getElementById('gateRight');
+  const whisperStage3 = document.getElementById('whisperStage3');
+  const fallingPetalsRain = document.getElementById('fallingPetalsRain');
+
+  // ---------------------------------------------------------------------------
+  // Romantic Palette & Sprites
+  // ---------------------------------------------------------------------------
   const COLOR_BG = '#060208';
   const COLOR_CORE_RGBA = 'rgba(185, 15, 60, 0.70)';
-  const COLOR_MID_RGBA = 'rgba(255, 50, 125, 0.85)';
   const COLOR_TIP_RGBA = 'rgba(255, 210, 235, 0.95)';
   const COLOR_HEART_RED = 'rgb(255, 24, 64)';
   const COLOR_TEXT_MAIN = '#fff8fc';
   const COLOR_TEXT_GLOW = 'rgba(255, 50, 125, 0.95)';
 
   // ---------------------------------------------------------------------------
-  // Heart Parametric Mathematics
+  // Heart Parametric Formula & Precomputations
   // ---------------------------------------------------------------------------
   function getHeartPoint(t) {
     const x = 16.0 * Math.pow(Math.sin(t), 3) * 1.08;
@@ -64,7 +92,6 @@
     return { nx, ny };
   }
 
-  // Precompute Radial Boundary Lookup Table
   const NUM_SAMPLES = 3000;
   const phis = [];
   const radii = [];
@@ -96,9 +123,7 @@
     return r0 + (r1 - r0) * ((phi - p0) / denom);
   }
 
-  // ---------------------------------------------------------------------------
-  // Pre-rendered Sprite Cache (Zero runtime shadowBlur / allocation overhead!)
-  // ---------------------------------------------------------------------------
+  // Pre-rendered Heart Sprites Cache
   const _OFFSCREEN_SPRITES = {};
 
   function createHeartSprite(size) {
@@ -152,13 +177,9 @@
     }
     return _OFFSCREEN_SPRITES[key];
   }
-
-  // Pre-generate standard heart sizes
   [16, 20, 24, 28].forEach(getHeartSprite);
 
-  // ---------------------------------------------------------------------------
-  // Silky Fibers (Flattened Typed Arrays for Maximum 120 FPS Throughput)
-  // ---------------------------------------------------------------------------
+  // Silky Fibers
   let fibers = [];
 
   function buildFibers() {
@@ -167,7 +188,6 @@
     const interiorCount = 7200;
     const rimCount = totalCount - interiorCount;
 
-    // 1. Interior starburst fibers
     for (let i = 0; i < interiorCount; i++) {
       const phi = (Math.random() * 2.0 - 1.0) * Math.PI;
       const maxR = getMaxRadius(phi);
@@ -185,7 +205,6 @@
       });
     }
 
-    // 2. Rim contour bristles
     for (let i = 0; i < rimCount; i++) {
       const t = Math.random() * 2.0 * Math.PI;
       const hp = getHeartPoint(t);
@@ -244,11 +263,12 @@
       this.y += this.vy;
       this.vy *= 0.992;
       this.life--;
-      return this.life > 0;
+      return this.life > 0 && this.y > 110;
     }
     draw(c) {
       const p = this.life / this.maxLife;
-      const alpha = p < 0.85 ? p * p * (3.0 - 2.0 * p) : (1.0 - p) / 0.15;
+      let alpha = p < 0.85 ? p * p * (3.0 - 2.0 * p) : (1.0 - p) / 0.15;
+      if (this.y < 165) alpha *= Math.max(0, (this.y - 110) / 55.0);
       if (alpha <= 0) return;
       c.save();
       c.globalAlpha = Math.max(0, Math.min(1, alpha));
@@ -275,11 +295,12 @@
       this.vy *= 0.965;
       this.vy -= 0.02;
       this.life--;
-      return this.life > 0;
+      return this.life > 0 && this.y > 110;
     }
     draw(c) {
       const p = this.life / this.maxLife;
-      const alpha = p * p * (3.0 - 2.0 * p);
+      let alpha = p * p * (3.0 - 2.0 * p);
+      if (this.y < 155) alpha *= Math.max(0, (this.y - 110) / 45.0);
       if (alpha <= 0) return;
       c.save();
       c.globalAlpha = Math.max(0, Math.min(1, alpha));
@@ -303,11 +324,12 @@
     update() {
       this.y += this.vy;
       this.life--;
-      return this.life > 0;
+      return this.life > 0 && this.y > 110;
     }
     draw(c) {
       const p = this.life / this.maxLife;
       let alpha = p > 0.8 ? (1.0 - p) / 0.2 : p / 0.8;
+      if (this.y < 165) alpha *= Math.max(0, (this.y - 110) / 55.0);
       alpha = Math.max(0, Math.min(1, alpha));
       if (alpha <= 0) return;
 
@@ -316,13 +338,11 @@
       c.textAlign = 'center';
       c.textBaseline = 'middle';
 
-      // Glow backing
-      c.globalAlpha = alpha * 0.65;
+      c.globalAlpha = alpha * 0.70;
       c.fillStyle = '#ff327d';
       c.fillText(this.text, this.x + 1, this.y + 1);
       c.fillText(this.text, this.x - 1, this.y - 1);
 
-      // Core text
       c.globalAlpha = alpha;
       c.fillStyle = COLOR_TEXT_MAIN;
       c.fillText(this.text, this.x, this.y);
@@ -330,7 +350,6 @@
     }
   }
 
-  // Active particle lists
   const rubyHearts = [];
   const fairyDust = [];
   const poeticWhispers = [];
@@ -338,7 +357,7 @@
   let whisperLaneToggle = 0;
 
   // ---------------------------------------------------------------------------
-  // Harmonic Spring Physics & Audio Engine
+  // Harmonic Physics & Canvas Sizing
   // ---------------------------------------------------------------------------
   let width = window.innerWidth;
   let height = window.innerHeight;
@@ -353,13 +372,36 @@
   let timeSec = 0.0;
   let lastBeatTrigger = false;
 
-  // Parallax
   let mouseX = width / 2;
   let mouseY = height / 2;
   let tiltX = 0;
   let tiltY = 0;
 
-  // Audio Synthesizer
+  // Mode: 'story' or 'heart'
+  let appMode = 'story';
+
+  function resizeCanvas() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
+
+    const minDim = Math.min(width, height);
+    baseScale = (minDim / 700) * 14.5;
+    baseScale = Math.max(8.0, Math.min(18.5, baseScale));
+  }
+
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+  buildFibers();
+
+  // ---------------------------------------------------------------------------
+  // Web Audio API Synthesizer (Zero External Dependencies)
+  // ---------------------------------------------------------------------------
   let audioCtx = null;
   let isMusicPlaying = false;
   let chordTimer = null;
@@ -404,6 +446,29 @@
 
       osc.start(now);
       osc.stop(now + 0.18);
+    } catch (e) {}
+  }
+
+  // Sweet Sound Effect Chimes for Mini-Tasks
+  function playSweetChime(freq = 523.25) { // C5
+    initAudio();
+    if (!audioCtx) return;
+    try {
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, now);
+      osc.frequency.exponentialRampToValueAtTime(freq * 1.5, now + 0.35);
+
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.linearRampToValueAtTime(0.12, now + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.45);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now);
+      osc.stop(now + 0.5);
     } catch (e) {}
   }
 
@@ -462,7 +527,7 @@
   function stopRomanticAudio() {
     isMusicPlaying = false;
     musicToggleBtn.classList.remove('active');
-    musicBtnLabel.textContent = 'Play Romantic Music & Heartbeat';
+    musicBtnLabel.textContent = 'Play Romantic Music';
     if (chordTimer) {
       clearInterval(chordTimer);
       chordTimer = null;
@@ -476,29 +541,242 @@
   });
 
   // ---------------------------------------------------------------------------
-  // Canvas Sizing & Fibers
+  // Interactive Story Stages Engine
   // ---------------------------------------------------------------------------
-  function resizeCanvas() {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const allScreens = [screenIntro, screenStage1, screenStage2, screenStage3, screenClimax];
 
-    canvas.width = Math.floor(width * dpr);
-    canvas.height = Math.floor(height * dpr);
-    canvas.style.width = width + 'px';
-    canvas.style.height = height + 'px';
-
-    const minDim = Math.min(width, height);
-    baseScale = (minDim / 700) * 14.5;
-    baseScale = Math.max(8.0, Math.min(18.5, baseScale));
+  function showScreen(targetScreen) {
+    allScreens.forEach(scr => scr.classList.remove('active'));
+    targetScreen.classList.add('active');
   }
 
-  window.addEventListener('resize', resizeCanvas);
-  resizeCanvas();
-  buildFibers();
+  function switchToHeartMode() {
+    appMode = 'heart';
+    storyContainer.classList.add('hidden');
+    romanticHeader.classList.add('visible');
+    romanticFooter.classList.add('visible');
+    if (!isMusicPlaying) startRomanticAudio();
+
+    // Spawn loving celebratory burst
+    const cx = width / 2;
+    const cy = height / 2;
+    for (let i = 0; i < 6; i++) {
+      rubyHearts.push(new FloatingRubyHeart(cx + (Math.random() - 0.5) * 120, cy + (Math.random() - 0.5) * 120, 24));
+    }
+  }
+
+  function switchToStoryMode() {
+    appMode = 'story';
+    storyContainer.classList.remove('hidden');
+    romanticHeader.classList.remove('visible');
+    romanticFooter.classList.remove('visible');
+    showScreen(screenIntro);
+  }
+
+  // --- Stage 1 Logic: Catch 3 Starlight Hearts ---
+  let starsCaught = 0;
+  const stage1Whispers = [
+    "Every step brings me closer to you, Deelan...",
+    "In a universe of billions, you are my only light...",
+    "My heart has always known the way to you ❤️"
+  ];
+
+  function initStage1() {
+    starsCaught = 0;
+    counterStage1.textContent = "⭐ 0 / 3 Caught";
+    whisperStage1.textContent = "";
+    btnNextStage1.disabled = true;
+    itemsStage1.innerHTML = "";
+
+    const positions = [
+      { top: '25%', left: '48%' },
+      { top: '48%', left: '68%' },
+      { top: '65%', left: '38%' }
+    ];
+
+    positions.forEach((pos, idx) => {
+      const star = document.createElement('div');
+      star.className = 'starlight-heart-item';
+      star.style.top = pos.top;
+      star.style.left = pos.left;
+      star.style.animationDelay = (idx * 0.4) + 's';
+      star.innerHTML = `
+        <div class="star-icon-wrap">⭐</div>
+      `;
+
+      star.addEventListener('click', (e) => {
+        e.stopPropagation();
+        star.style.pointerEvents = 'none';
+        star.style.transform = 'scale(1.6)';
+        star.style.opacity = '0';
+        setTimeout(() => star.remove(), 350);
+
+        starsCaught++;
+        playSweetChime(523.25 + idx * 110);
+        counterStage1.textContent = `⭐ ${starsCaught} / 3 Caught`;
+        whisperStage1.textContent = stage1Whispers[idx] || "Almost there, Deelan...";
+
+        if (starsCaught >= 3) {
+          btnNextStage1.disabled = false;
+        }
+      });
+
+      itemsStage1.appendChild(star);
+    });
+  }
+
+  // --- Stage 2 Logic: Clear 3 Rose Petal Clusters ---
+  let petalsCleared = 0;
+  const stage2Whispers = [
+    "No distance could ever keep our souls apart...",
+    "Every rose blooms with your name, Deelan...",
+    "The bridge is glowing with our love 🌸"
+  ];
+
+  function initStage2() {
+    petalsCleared = 0;
+    counterStage2.textContent = "🌸 0 / 3 Petals Cleared";
+    whisperStage2.textContent = "";
+    btnNextStage2.disabled = true;
+    itemsStage2.innerHTML = "";
+
+    const positions = [
+      { top: '40%', left: '46%' },
+      { top: '56%', left: '62%' },
+      { top: '32%', left: '74%' }
+    ];
+
+    positions.forEach((pos, idx) => {
+      const rose = document.createElement('div');
+      rose.className = 'rose-cluster-item';
+      rose.style.top = pos.top;
+      rose.style.left = pos.left;
+      rose.style.animationDelay = (idx * 0.5) + 's';
+      rose.innerHTML = `
+        <div class="rose-icon-wrap">🌸</div>
+      `;
+
+      rose.addEventListener('click', (e) => {
+        e.stopPropagation();
+        rose.style.pointerEvents = 'none';
+        rose.style.transform = 'scale(1.5) rotate(45deg)';
+        rose.style.opacity = '0';
+        setTimeout(() => rose.remove(), 350);
+
+        petalsCleared++;
+        playSweetChime(587.33 + idx * 95);
+        counterStage2.textContent = `🌸 ${petalsCleared} / 3 Petals Cleared`;
+        whisperStage2.textContent = stage2Whispers[idx] || "You are so close to him, Deelan...";
+
+        if (petalsCleared >= 3) {
+          btnNextStage2.disabled = false;
+        }
+      });
+
+      itemsStage2.appendChild(rose);
+    });
+  }
+
+  // --- Stage 3 Logic: Golden Heart Key ---
+  function initStage3() {
+    goldenKeyItem.classList.remove('unlocked');
+    const gateScenery = document.querySelector('.gate-scenery');
+    if (gateScenery) gateScenery.classList.remove('open');
+    whisperStage3.textContent = "";
+    btnNextStage3.disabled = true;
+
+    goldenKeyItem.onclick = (e) => {
+      e.stopPropagation();
+      playSweetChime(659.25);
+      setTimeout(() => playSweetChime(880.00), 160);
+
+      goldenKeyItem.classList.add('unlocked');
+      if (gateScenery) gateScenery.classList.add('open');
+      whisperStage3.textContent = "He is waiting right here for you, Deelan ✨";
+      btnNextStage3.disabled = false;
+    };
+  }
+
+  // --- Stage 4 Logic: Grand Climax & Bouquet Reveal ---
+  function initClimax() {
+    if (!isMusicPlaying) startRomanticAudio();
+    playSweetChime(440.00);
+    setTimeout(() => playSweetChime(659.25), 200);
+
+    // Falling petals rain generator
+    fallingPetalsRain.innerHTML = "";
+    for (let i = 0; i < 20; i++) {
+      const petal = document.createElement('div');
+      petal.textContent = Math.random() < 0.5 ? '🌸' : '🌹';
+      petal.style.position = 'absolute';
+      petal.style.left = Math.random() * 100 + '%';
+      petal.style.top = '-20px';
+      petal.style.fontSize = (14 + Math.random() * 12) + 'px';
+      petal.style.opacity = (0.5 + Math.random() * 0.5).toString();
+      petal.style.animation = `petal-fall ${3 + Math.random() * 3}s linear infinite`;
+      petal.style.animationDelay = (Math.random() * 3) + 's';
+      fallingPetalsRain.appendChild(petal);
+    }
+  }
+
+  // Inject dynamic keyframe for petal rain
+  const petalStyle = document.createElement('style');
+  petalStyle.textContent = `
+    @keyframes petal-fall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+  `;
+  document.head.appendChild(petalStyle);
+
+  // Button Listeners
+  btnStartJourney.addEventListener('click', () => {
+    initAudio();
+    if (!isMusicPlaying) startRomanticAudio();
+    initStage1();
+    showScreen(screenStage1);
+  });
+
+  btnSkipToHeart.addEventListener('click', () => {
+    switchToHeartMode();
+  });
+
+  btnNextStage1.addEventListener('click', () => {
+    initStage2();
+    showScreen(screenStage2);
+  });
+
+  btnNextStage2.addEventListener('click', () => {
+    initStage3();
+    showScreen(screenStage3);
+  });
+
+  btnNextStage3.addEventListener('click', () => {
+    initClimax();
+    showScreen(screenClimax);
+  });
+
+  btnAcceptRoses.addEventListener('click', () => {
+    // Jubilant celebration
+    playSweetChime(523.25);
+    setTimeout(() => playSweetChime(659.25), 150);
+    setTimeout(() => playSweetChime(783.99), 300);
+    setTimeout(() => playSweetChime(1046.50), 450);
+
+    btnAcceptRoses.disabled = true;
+    btnAcceptRoses.innerHTML = "<span>Forever Yours, Deelan ❤️</span>";
+
+    setTimeout(() => {
+      switchToHeartMode();
+    }, 1200);
+  });
+
+  btnReplayStory.addEventListener('click', () => {
+    switchToStoryMode();
+  });
 
   // ---------------------------------------------------------------------------
-  // Interactions & Particle Spawning
+  // Canvas Click / Particle Interaction (In Heart Mode)
   // ---------------------------------------------------------------------------
   function triggerPoeticWhisper(cx, cy) {
     const now = timeSec;
@@ -514,16 +792,18 @@
   }
 
   function handleUserClick() {
+    if (appMode !== 'heart') return;
+
     if (!isMusicPlaying) startRomanticAudio();
     playHeartbeatThump(0.75, 1.05);
 
-    // Harmonic spring velocity impulse
+    // Harmonic spring impulse
     springV = Math.min(2.4, springV + 0.85);
 
     const cx = width / 2 + tiltX;
     const cy = height / 2 - 15 + tiltY;
 
-    // Burst ruby hearts (budget cap)
+    // Burst ruby hearts
     if (rubyHearts.length < 14) {
       const count = 2 + Math.floor(Math.random() * 3);
       for (let i = 0; i < count; i++) {
@@ -570,7 +850,6 @@
     const period = 60.0 / BPM;
     const p = (timeSec % period) / period;
 
-    // Harmonic spring update
     const kSpring = 42.0;
     const cSpring = 8.6;
     const springAcc = -kSpring * springX - cSpring * springV;
@@ -579,7 +858,6 @@
 
     const springOffset = Math.min(0.18, Math.max(0.0, springX));
 
-    // Dual-Gaussian heartbeat
     const d1 = p - 0.10;
     const d2 = p - 0.28;
     const gaussianLub = Math.exp(-(d1 * d1) / (2.0 * 0.038 * 0.038));
@@ -591,25 +869,26 @@
     const cx = width / 2 + tiltX;
     const cy = height / 2 - 15 + tiltY;
 
-    // Heartbeat pulse triggers
-    if (gaussianLub > 0.85) {
-      if (!lastBeatTrigger) {
-        lastBeatTrigger = true;
-        playHeartbeatThump(0.60, 1.0);
-        triggerPoeticWhisper(cx, cy);
-        if (rubyHearts.length < 8) {
-          const hp = getHeartPoint(Math.random() * 2 * Math.PI);
-          rubyHearts.push(new FloatingRubyHeart(cx + hp.x * baseScale * rawScale, cy + hp.y * baseScale * rawScale, 18));
+    if (appMode === 'heart') {
+      if (gaussianLub > 0.85) {
+        if (!lastBeatTrigger) {
+          lastBeatTrigger = true;
+          playHeartbeatThump(0.60, 1.0);
+          triggerPoeticWhisper(cx, cy);
+          if (rubyHearts.length < 8) {
+            const hp = getHeartPoint(Math.random() * 2 * Math.PI);
+            rubyHearts.push(new FloatingRubyHeart(cx + hp.x * baseScale * rawScale, cy + hp.y * baseScale * rawScale, 18));
+          }
         }
-      }
-    } else if (gaussianDub > 0.8) {
-      if (lastBeatTrigger) {
-        lastBeatTrigger = false;
-        playHeartbeatThump(0.45, 1.15);
-      }
-    } else {
-      if (gaussianLub < 0.2 && gaussianDub < 0.2) {
-        lastBeatTrigger = false;
+      } else if (gaussianDub > 0.8) {
+        if (lastBeatTrigger) {
+          lastBeatTrigger = false;
+          playHeartbeatThump(0.45, 1.15);
+        }
+      } else {
+        if (gaussianLub < 0.2 && gaussianDub < 0.2) {
+          lastBeatTrigger = false;
+        }
       }
     }
 
@@ -617,7 +896,6 @@
     prevBeatScale = beatScale;
     beatScale = rawScale;
 
-    // Tip lag inertia
     const targetLag = -scaleVelocity * 0.0055;
     curTipLag += (targetLag - curTipLag) * 0.16;
 
@@ -645,7 +923,6 @@
     ctx.save();
     ctx.scale(dpr, dpr);
 
-    // Deep velvet midnight
     ctx.fillStyle = COLOR_BG;
     ctx.fillRect(0, 0, width, height);
 
@@ -655,7 +932,7 @@
     const lagFactor = curTipLag;
     const flutterTime = timeSec * 3.6;
 
-    // BATCHED FIBER DRAWING (Only 2 stroke() calls for all 9,500 fibers!)
+    // Batched Fibers
     ctx.lineWidth = 1.0;
 
     // 1. Core/mid fiber segments
@@ -717,7 +994,6 @@
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
-    // Layered rose halo
     ctx.globalAlpha = 0.85 * namePulse;
     ctx.fillStyle = COLOR_TEXT_GLOW;
     for (let dx = -2; dx <= 2; dx += 2) {
@@ -726,28 +1002,27 @@
       }
     }
 
-    // Core crisp starlight text
     ctx.globalAlpha = 1.0;
     ctx.fillStyle = COLOR_TEXT_MAIN;
     ctx.fillText('Deelan', cx, cy - 25);
     ctx.restore();
 
-    // 4. Floating Ruby Hearts
-    for (let i = rubyHearts.length - 1; i >= 0; i--) {
-      if (!rubyHearts[i].update(dt)) rubyHearts.splice(i, 1);
-      else rubyHearts[i].draw(ctx);
-    }
+    // In Heart Mode, draw particles
+    if (appMode === 'heart') {
+      for (let i = rubyHearts.length - 1; i >= 0; i--) {
+        if (!rubyHearts[i].update(dt)) rubyHearts.splice(i, 1);
+        else rubyHearts[i].draw(ctx);
+      }
 
-    // 5. Fairy Stardust Sparks
-    for (let i = fairyDust.length - 1; i >= 0; i--) {
-      if (!fairyDust[i].update()) fairyDust.splice(i, 1);
-      else fairyDust[i].draw(ctx);
-    }
+      for (let i = fairyDust.length - 1; i >= 0; i--) {
+        if (!fairyDust[i].update()) fairyDust.splice(i, 1);
+        else fairyDust[i].draw(ctx);
+      }
 
-    // 6. Dedicated Poetic Whispers
-    for (let i = poeticWhispers.length - 1; i >= 0; i--) {
-      if (!poeticWhispers[i].update()) poeticWhispers.splice(i, 1);
-      else poeticWhispers[i].draw(ctx);
+      for (let i = poeticWhispers.length - 1; i >= 0; i--) {
+        if (!poeticWhispers[i].update()) poeticWhispers.splice(i, 1);
+        else poeticWhispers[i].draw(ctx);
+      }
     }
 
     ctx.restore();
@@ -765,13 +1040,13 @@
   });
 
   window.addEventListener('click', (e) => {
-    if (!musicToggleBtn.contains(e.target)) {
+    if (!musicToggleBtn.contains(e.target) && !btnReplayStory.contains(e.target)) {
       handleUserClick();
     }
   });
 
   window.addEventListener('touchstart', (e) => {
-    if (e.touches && e.touches[0] && !musicToggleBtn.contains(e.target)) {
+    if (e.touches && e.touches[0] && !musicToggleBtn.contains(e.target) && !btnReplayStory.contains(e.target)) {
       handleUserClick();
     }
   }, { passive: true });

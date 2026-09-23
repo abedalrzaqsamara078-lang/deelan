@@ -1,20 +1,23 @@
 /* ==========================================================================
    Forever With You — Deelan ❤️
-   Ultra-Smooth Romantic Love Aesthetics
+   Interactive Romantic Storybook & Ultra-Smooth Silky Beating Heart
    ========================================================================== */
 
 :root {
-  --bg-deep: #060207;
-  --bg-vignette: radial-gradient(circle at center, transparent 38%, rgba(4, 1, 6, 0.92) 100%);
+  --bg-deep: #060208;
+  --bg-vignette: radial-gradient(circle at center, transparent 35%, rgba(4, 1, 6, 0.94) 100%);
   
-  --crimson-core: #ff1c4b;
-  --rose-glow: #ff5294;
+  --crimson-core: #ff1840;
+  --rose-glow: #ff4890;
+  --rose-soft: #ffb8dc;
   --pink-silk: #ffd6ea;
-  --gold-dust: #ffd27d;
+  --gold-stardust: #ffd27d;
+  --gold-halo: rgba(255, 210, 125, 0.4);
   
   --font-serif: 'Cinzel', Georgia, serif;
   --font-cursive: 'Alex Brush', cursive;
   --font-sans: 'Outfit', sans-serif;
+  --font-arabic: 'Segoe UI', Tahoma, Arial, sans-serif;
 }
 
 *, *::before, *::after {
@@ -36,7 +39,7 @@ body {
 }
 
 /* ==========================================================================
-   Canvas & Atmosphere
+   Background Canvas & Atmosphere
    ========================================================================== */
 
 .canvas-container {
@@ -49,6 +52,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 10;
+  transition: opacity 0.8s ease;
 }
 
 canvas#heartCanvas {
@@ -84,7 +89,7 @@ canvas#heartCanvas {
 }
 
 /* ==========================================================================
-   Romantic Header Dedication
+   Romantic Header (Heart Mode)
    ========================================================================== */
 
 .romantic-header {
@@ -99,12 +104,14 @@ canvas#heartCanvas {
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  animation: header-fade-in 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes header-fade-in {
-  0% { opacity: 0; transform: translateY(-20px); }
-  100% { opacity: 1; transform: translateY(0); }
+.romantic-header.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .main-title {
@@ -129,7 +136,7 @@ canvas#heartCanvas {
 
 .highlight-name {
   font-family: var(--font-cursive);
-  font-size: 36px;
+  font-size: 38px;
   font-weight: 700;
   color: #ff5294;
   margin: 0 5px;
@@ -158,26 +165,775 @@ canvas#heartCanvas {
 }
 
 /* ==========================================================================
-   Discreet Floating Music Control
+   Interactive Story Mode Container
    ========================================================================== */
 
-.audio-control {
+.story-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.story-container.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.story-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.96) translateY(15px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  padding: 20px;
+}
+
+.story-screen.active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1) translateY(0);
+  pointer-events: auto;
+}
+
+/* Glass Panels */
+.glass-panel {
+  background: rgba(18, 6, 18, 0.72);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 75, 145, 0.38);
+  border-radius: 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75),
+              0 0 35px rgba(255, 45, 120, 0.25);
+}
+
+/* Intro Screen Card */
+.intro-card {
+  max-width: 480px;
+  width: 90%;
+  padding: 38px 28px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  animation: card-appear 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes card-appear {
+  0% { opacity: 0; transform: scale(0.92) translateY(20px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.card-badge {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-stardust);
+  background: rgba(255, 218, 125, 0.12);
+  padding: 5px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 218, 125, 0.3);
+}
+
+.story-title {
+  font-family: var(--font-serif);
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #fff5fa;
+  text-shadow: 0 0 20px rgba(255, 60, 130, 0.7);
+}
+
+.story-subhead {
+  font-family: var(--font-cursive);
+  font-size: 32px;
+  color: #ff5294;
+  margin-top: -6px;
+  text-shadow: 0 0 16px rgba(255, 60, 140, 0.85);
+}
+
+.intro-illustration {
+  margin: 10px 0;
+}
+
+.mini-couple-preview {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 32px;
+}
+
+.avatar-girl {
+  animation: bounce-gentle 1.8s infinite alternate ease-in-out;
+}
+
+.avatar-boy {
+  animation: bounce-gentle 1.8s infinite 0.9s alternate ease-in-out;
+}
+
+.love-path-trail {
+  font-size: 16px;
+  color: #ff75a5;
+  letter-spacing: 3px;
+  animation: pulse-trail 2s infinite ease-in-out;
+}
+
+@keyframes pulse-trail {
+  0%, 100% { opacity: 0.5; transform: scale(0.95); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+.story-text {
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(255, 230, 242, 0.9);
+  max-width: 380px;
+}
+
+/* ==========================================================================
+   Stage HUD & Quests
+   ========================================================================== */
+
+.stage-hud {
+  position: absolute;
+  top: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.hud-step {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-stardust);
+}
+
+.hud-title {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff0f6;
+  text-shadow: 0 0 18px rgba(255, 50, 120, 0.6);
+}
+
+.quest-prompt {
+  position: absolute;
+  top: 100px;
+  padding: 12px 24px;
+  text-align: center;
+  max-width: 440px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.quest-prompt p {
+  font-size: 14px;
+  color: rgba(255, 235, 245, 0.95);
+}
+
+.quest-counter {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gold-stardust);
+  background: rgba(255, 218, 125, 0.12);
+  padding: 3px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 218, 125, 0.25);
+}
+
+/* ==========================================================================
+   Stage Viewport & Characters
+   ========================================================================== */
+
+.stage-viewport {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.character-wrapper {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 25;
+}
+
+.girl-stage1 {
+  left: 15%;
+  bottom: 12%;
+  animation: girl-walk 2.4s infinite alternate ease-in-out;
+}
+
+.girl-stage2 {
+  left: 20%;
+  bottom: 16%;
+  animation: girl-walk 2.4s infinite alternate ease-in-out;
+}
+
+.girl-stage3 {
+  left: 22%;
+  bottom: 14%;
+  animation: girl-walk 2.4s infinite alternate ease-in-out;
+}
+
+@keyframes girl-walk {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0); }
+}
+
+.char-sprite {
+  width: 110px;
+  height: 165px;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.65));
+}
+
+.svg-char {
+  width: 100%;
+  height: 100%;
+}
+
+.char-name-tag {
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff0f6;
+  background: rgba(255, 45, 115, 0.35);
+  backdrop-filter: blur(10px);
+  padding: 3px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 120, 180, 0.5);
+  margin-top: 6px;
+  box-shadow: 0 0 12px rgba(255, 45, 115, 0.4);
+}
+
+/* Interactive Clickable Quest Items */
+.interactive-stage-items {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 30;
+}
+
+.starlight-heart-item {
+  position: absolute;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.25s ease, filter 0.25s ease;
+  animation: float-star 3s infinite ease-in-out;
+}
+
+.starlight-heart-item:hover {
+  transform: scale(1.22);
+}
+
+.star-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 45, 120, 0.8) 0%, rgba(255, 200, 100, 0.4) 60%, transparent 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 0 25px rgba(255, 50, 130, 0.9);
+  animation: star-pulse 1.4s infinite alternate ease-in-out;
+}
+
+@keyframes star-pulse {
+  0% { transform: scale(0.95); filter: brightness(1); }
+  100% { transform: scale(1.1); filter: brightness(1.35); }
+}
+
+@keyframes float-star {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+
+/* Stage 2 Rose Bridge */
+.bridge-scenery {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 160px;
+  pointer-events: none;
+}
+
+.bridge-arch {
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  width: 80%;
+  height: 90px;
+  border-top: 4px solid rgba(255, 120, 180, 0.4);
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  box-shadow: 0 -5px 30px rgba(255, 60, 130, 0.25);
+}
+
+.moon-glow {
+  position: absolute;
+  top: 10px;
+  right: 18%;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fffdf8 30%, rgba(255, 240, 200, 0.4) 70%, transparent 100%);
+  box-shadow: 0 0 45px rgba(255, 230, 180, 0.85);
+}
+
+.rose-cluster-item {
+  position: absolute;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: float-star 2.8s infinite ease-in-out;
+  transition: transform 0.2s ease;
+}
+
+.rose-cluster-item:hover {
+  transform: scale(1.2);
+}
+
+.rose-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 24, 64, 0.8) 0%, rgba(255, 100, 150, 0.3) 70%, transparent 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  box-shadow: 0 0 20px rgba(255, 28, 75, 0.8);
+}
+
+/* Stage 3 Gate */
+.gate-scenery {
+  position: absolute;
+  top: 20px;
+  width: 220px;
+  height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 600px;
+}
+
+.gate-arch {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border: 3px solid rgba(255, 218, 130, 0.6);
+  border-bottom: none;
+  border-radius: 110px 110px 0 0;
+  box-shadow: 0 0 35px rgba(255, 210, 120, 0.35);
+}
+
+.gate-door {
+  width: 50%;
+  height: 100%;
+  background: rgba(35, 14, 28, 0.65);
+  border: 2px solid rgba(255, 180, 210, 0.4);
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gate-left {
+  border-radius: 100px 0 0 0;
+  transform-origin: left;
+}
+
+.gate-right {
+  border-radius: 0 100px 0 0;
+  transform-origin: right;
+}
+
+.gate-scenery.open .gate-left {
+  transform: rotateY(-80deg);
+}
+
+.gate-scenery.open .gate-right {
+  transform: rotateY(80deg);
+}
+
+.golden-key-item {
+  position: absolute;
+  bottom: 35%;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 35;
+  animation: key-hover 2.2s infinite ease-in-out;
+  transition: transform 0.3s ease;
+}
+
+.golden-key-item:hover {
+  transform: scale(1.15);
+}
+
+.golden-key-item.unlocked {
+  animation: key-spin-away 0.8s forwards ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes key-hover {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes key-spin-away {
+  0% { transform: scale(1) rotate(0deg); opacity: 1; }
+  100% { transform: scale(1.6) rotate(360deg); opacity: 0; }
+}
+
+.key-icon {
+  font-size: 38px;
+  filter: drop-shadow(0 0 18px rgba(255, 218, 125, 0.95));
+}
+
+.key-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--gold-stardust);
+  background: rgba(20, 8, 18, 0.8);
+  padding: 4px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 218, 125, 0.4);
+}
+
+/* Whisper Banners */
+.whisper-banner {
+  min-height: 32px;
+  margin-top: 10px;
+  font-family: var(--font-cursive);
+  font-size: 24px;
+  color: #ffd6ea;
+  text-shadow: 0 0 14px rgba(255, 60, 130, 0.85);
+  text-align: center;
+  transition: opacity 0.5s ease;
+}
+
+.stage-footer {
+  margin-top: 16px;
+}
+
+/* ==========================================================================
+   Screen 4: Grand Climax — The Reunion & Bouquet of Red Roses
+   ========================================================================== */
+
+.climax-atmosphere {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.gazebo-arch {
+  position: absolute;
+  top: 6%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 520px;
+  height: 360px;
+  border: 2px solid rgba(255, 100, 160, 0.3);
+  border-bottom: none;
+  border-radius: 260px 260px 0 0;
+  box-shadow: 0 -10px 40px rgba(255, 45, 115, 0.2);
+}
+
+.fairy-lights-garland {
+  position: absolute;
+  top: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 480px;
+  height: 50px;
+  background: radial-gradient(circle, #ffe699 2px, transparent 3px);
+  background-size: 24px 24px;
+  opacity: 0.75;
+  filter: drop-shadow(0 0 10px #ffe699);
+}
+
+.reunion-stage {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  height: 240px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 38px;
+  margin-top: 40px;
+}
+
+.climax-char-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.char-deelan-climax {
+  animation: girl-approach 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes girl-approach {
+  0% { transform: translateX(-50px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+.char-boy-climax {
+  animation: boy-present 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes boy-present {
+  0% { transform: translateX(50px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+/* Red Rose Bouquet */
+.rose-bouquet-item {
+  position: absolute;
+  top: 42%;
+  left: -22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: bouquet-sway 2.4s infinite alternate ease-in-out;
+  filter: drop-shadow(0 0 16px rgba(255, 24, 64, 0.9));
+}
+
+@keyframes bouquet-sway {
+  0% { transform: rotate(-5deg) scale(1); }
+  100% { transform: rotate(5deg) scale(1.08); }
+}
+
+.bouquet-flowers {
+  position: relative;
+  width: 60px;
+  height: 50px;
+}
+
+.flower {
+  position: absolute;
+  font-size: 24px;
+}
+
+.flower.f1 { top: 0; left: 16px; font-size: 28px; z-index: 5; }
+.flower.f2 { top: 12px; left: 0px; font-size: 24px; }
+.flower.f3 { top: 12px; right: 0px; font-size: 24px; }
+.flower.f4 { top: 22px; left: 8px; font-size: 22px; }
+.flower.f5 { top: 22px; right: 8px; font-size: 22px; }
+
+.bouquet-ribbon {
+  font-size: 20px;
+  margin-top: -6px;
+  color: var(--gold-stardust);
+}
+
+/* Climax Dialogue Box */
+.climax-dialogue {
+  max-width: 540px;
+  width: 92%;
+  padding: 28px 24px;
+  text-align: center;
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  animation: dialogue-fade-up 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(255, 100, 160, 0.55);
+}
+
+@keyframes dialogue-fade-up {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.dialogue-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.dialogue-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-stardust);
+  background: rgba(255, 218, 125, 0.14);
+  padding: 4px 14px;
+  border-radius: 12px;
+}
+
+.dialogue-title {
+  font-family: var(--font-cursive);
+  font-size: 34px;
+  color: #ff5294;
+  text-shadow: 0 0 16px rgba(255, 60, 140, 0.8);
+}
+
+.dialogue-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dialogue-en {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: #fff2f8;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+}
+
+.dialogue-ar {
+  font-family: var(--font-arabic);
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffd2eb;
+  line-height: 1.6;
+  direction: rtl;
+  text-shadow: 0 0 12px rgba(255, 50, 120, 0.5);
+}
+
+/* Buttons */
+.card-actions {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.btn {
+  padding: 13px 26px;
+  border-radius: 30px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #ff2a6d 0%, #cf1048 100%);
+  color: #ffffff;
+  box-shadow: 0 8px 25px rgba(255, 30, 80, 0.45);
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(255, 30, 80, 0.65);
+}
+
+.btn-primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: rgba(255, 210, 235, 0.75);
+  border: 1px solid rgba(255, 120, 180, 0.25);
+}
+
+.btn-ghost:hover {
+  background: rgba(255, 60, 130, 0.15);
+  color: #fff;
+  border-color: rgba(255, 120, 180, 0.5);
+}
+
+.btn-climax {
+  background: linear-gradient(135deg, #ff1840 0%, #b80d35 100%);
+  color: #ffffff;
+  padding: 15px 32px;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 35px;
+  box-shadow: 0 10px 35px rgba(255, 24, 64, 0.6), 0 0 20px rgba(255, 80, 140, 0.4);
+  animation: climax-pulse 1.8s infinite alternate ease-in-out;
+}
+
+@keyframes climax-pulse {
+  0% { transform: scale(1); box-shadow: 0 10px 30px rgba(255, 24, 64, 0.5); }
+  100% { transform: scale(1.05); box-shadow: 0 14px 40px rgba(255, 24, 64, 0.85); }
+}
+
+/* ==========================================================================
+   Persistent Floating Bottom Controls
+   ========================================================================== */
+
+.bottom-controls {
   position: fixed;
-  bottom: 30px;
-  left: 32px;
+  bottom: 26px;
+  left: 30px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
   z-index: 60;
 }
 
-.music-btn {
+.control-btn {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 11px 22px;
+  gap: 9px;
+  padding: 10px 20px;
   border-radius: 35px;
-  background: rgba(25, 10, 22, 0.65);
+  background: rgba(25, 8, 22, 0.7);
   backdrop-filter: blur(20px) saturate(160%);
   -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid rgba(255, 80, 150, 0.3);
+  border: 1px solid rgba(255, 80, 150, 0.35);
   color: #ffe6f2;
   font-family: var(--font-sans);
   font-size: 13px;
@@ -188,16 +944,12 @@ canvas#heartCanvas {
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.music-btn:hover {
-  background: rgba(45, 15, 38, 0.85);
+.control-btn:hover {
+  background: rgba(45, 12, 38, 0.88);
   border-color: rgba(255, 100, 170, 0.6);
   transform: translateY(-2px);
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6),
               0 0 25px rgba(255, 45, 120, 0.4);
-}
-
-.music-btn:active {
-  transform: translateY(0);
 }
 
 .sound-wave {
@@ -228,62 +980,100 @@ canvas#heartCanvas {
   100% { height: 13px; }
 }
 
-/* ==========================================================================
-   Romantic Footer
-   ========================================================================== */
-
+/* Romantic Footer Note */
 .romantic-footer {
   position: fixed;
-  bottom: 24px;
+  bottom: 22px;
   left: 0;
   right: 0;
   text-align: center;
   pointer-events: none;
   z-index: 50;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.romantic-footer.visible {
+  opacity: 1;
 }
 
 .romantic-footer p {
   font-size: 12px;
   letter-spacing: 0.8px;
-  color: rgba(255, 215, 235, 0.5);
-  animation: pulse-hint 3.5s infinite alternate ease-in-out;
-}
-
-@keyframes pulse-hint {
-  0% { opacity: 0.35; }
-  100% { opacity: 0.75; }
+  color: rgba(255, 215, 235, 0.55);
 }
 
 /* ==========================================================================
-   Responsive Adaptations
+   Responsive Adaptations (Mobile & Small Screens)
    ========================================================================== */
 
 @media (max-width: 600px) {
   .romantic-header {
-    top: 24px;
-    padding: 0 16px;
+    top: 22px;
+    padding: 0 14px;
   }
   
   .main-title {
-    font-size: 23px;
+    font-size: 21px;
     letter-spacing: 2px;
   }
   
   .sub-title {
-    font-size: 13px;
+    font-size: 12.5px;
     line-height: 1.4;
   }
   
   .highlight-name {
+    font-size: 26px;
+  }
+  
+  .stage-viewport {
+    height: 300px;
+    margin-top: 30px;
+  }
+
+  .char-sprite {
+    width: 85px;
+    height: 130px;
+  }
+
+  .reunion-stage {
+    gap: 18px;
+    height: 200px;
+    margin-top: 20px;
+  }
+
+  .climax-dialogue {
+    padding: 20px 16px;
+    margin-top: 14px;
+  }
+
+  .dialogue-title {
     font-size: 28px;
   }
-  
-  .audio-control {
-    bottom: 20px;
+
+  .dialogue-en {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .dialogue-ar {
+    font-size: 14px;
+  }
+
+  .bottom-controls {
+    bottom: 16px;
     left: 50%;
     transform: translateX(-50%);
+    width: 92%;
+    justify-content: center;
   }
-  
+
+  .control-btn {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+
   .romantic-footer {
     display: none;
   }

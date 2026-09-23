@@ -4,58 +4,413 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Forever With You — Deelan ❤️</title>
-  <meta name="description" content="A romantic poetic tribute dedicated to Deelan. Every beat of this heart belongs to you.">
+  <meta name="description" content="A romantic interactive journey and poetic tribute dedicated to Deelan. Every beat of this heart belongs to you.">
   <meta name="theme-color" content="#060208">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-  <!-- Open Graph / WhatsApp / Facebook / Instagram -->
+  <!-- Open Graph / WhatsApp / Instagram / Telegram -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Forever With You — Deelan ❤️">
-  <meta property="og:description" content="A poetic romantic tribute dedicated to Deelan. Every beat of this heart belongs to you.">
+  <meta property="og:description" content="A romantic interactive journey and poetic tribute dedicated to Deelan. Every beat of this heart belongs to you.">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:title" content="Forever With You — Deelan ❤️">
-  <meta property="twitter:description" content="A poetic romantic tribute dedicated to Deelan. Every beat of this heart belongs to you.">
+  <meta property="twitter:description" content="A romantic interactive journey and poetic tribute dedicated to Deelan. Every beat of this heart belongs to you.">
 
+  <!-- Romantic Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@400;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Fullscreen Generative Canvas -->
-  <div class="canvas-container">
+  <!-- Fullscreen Generative Heart Canvas Background -->
+  <div class="canvas-container" id="canvasContainer">
     <canvas id="heartCanvas"></canvas>
     <div class="vignette-overlay"></div>
     <div class="ambient-glow" id="ambientGlow"></div>
   </div>
 
-  <!-- Romantic Header Dedication -->
-  <header class="romantic-header">
+  <!-- Dedicated Romantic Header (Visible in Heart Mode) -->
+  <header class="romantic-header" id="romanticHeader">
     <h1 class="main-title">My Heart Beats Only For You</h1>
     <p class="sub-title">
       In a universe of billions, my soul found its forever home in <span class="highlight-name">Deelan</span> <span class="heart-symbol">❤️</span>
     </p>
   </header>
 
-  <!-- Discreet Floating Audio Toggle -->
-  <div class="audio-control">
-    <button class="music-btn" id="musicToggleBtn" aria-label="Toggle Romantic Music & Heartbeat">
-      <span class="music-icon">🎵</span>
-      <span id="musicBtnLabel">Play Romantic Music & Heartbeat</span>
+  <!-- =========================================================================
+       Interactive Romantic Story Mode: "A Journey To You"
+       ========================================================================= -->
+  <main class="story-container" id="storyContainer">
+    
+    <!-- Screen 0: Story Intro Card -->
+    <section class="story-screen active" id="screenIntro">
+      <div class="story-card glass-panel intro-card">
+        <div class="card-badge">✨ An Interactive Love Story ✨</div>
+        <h2 class="story-title">A Journey to You</h2>
+        <p class="story-subhead">Dedicated to Deelan ❤️</p>
+        
+        <div class="intro-illustration">
+          <div class="mini-couple-preview">
+            <span class="avatar-girl">👧🏻</span>
+            <span class="love-path-trail">⋯⋯ 💕 ⋯⋯</span>
+            <span class="avatar-boy">👦🏻🌹</span>
+          </div>
+        </div>
+
+        <p class="story-text">
+          Deelan, follow the path of glowing starlight...<br>
+          Someone who loves you endlessly is waiting for you at the end of the journey.
+        </p>
+
+        <div class="card-actions">
+          <button class="btn btn-primary" id="btnStartJourney">
+            <span>Begin Your Journey ✨</span>
+          </button>
+          <button class="btn btn-ghost" id="btnSkipToHeart">
+            <span>Skip to Beating Heart ❤️</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen 1: Stage 1 — The Starlight Meadow -->
+    <section class="story-screen" id="screenStage1">
+      <div class="stage-hud">
+        <span class="hud-step">Step 1 of 3</span>
+        <span class="hud-title">The Starlight Meadow ✨</span>
+      </div>
+
+      <div class="quest-prompt glass-panel">
+        <p>Catch <strong>3 glowing starlight hearts</strong> to illuminate your path to him.</p>
+        <div class="quest-counter" id="counterStage1">⭐ 0 / 3 Caught</div>
+      </div>
+
+      <!-- Stage Play Area -->
+      <div class="stage-viewport" id="viewportStage1">
+        <div class="character-wrapper girl-stage1" id="charDeelanStage1">
+          <!-- Deelan Vector SVG Character -->
+          <div class="char-sprite deelan-sprite">
+            <svg viewBox="0 0 120 180" class="svg-char">
+              <defs>
+                <radialGradient id="gSkin" cx="50%" cy="40%" r="50%">
+                  <stop offset="0%" stop-color="#fff4ef"/>
+                  <stop offset="100%" stop-color="#fdd9ce"/>
+                </radialGradient>
+                <linearGradient id="gHair" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#3b1d28"/>
+                  <stop offset="100%" stop-color="#1d0a14"/>
+                </linearGradient>
+                <linearGradient id="gDress" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#ff6599"/>
+                  <stop offset="100%" stop-color="#cf1a58"/>
+                </linearGradient>
+              </defs>
+              <!-- Hair Back -->
+              <path d="M35,55 Q20,95 28,135 Q60,150 92,135 Q100,95 85,55 Z" fill="url(#gHair)"/>
+              <!-- Dress Body -->
+              <path d="M48,95 L72,95 L90,148 Q60,158 30,148 Z" fill="url(#gDress)"/>
+              <ellipse cx="60" cy="148" rx="30" ry="5" fill="#fff0f5" opacity="0.85"/>
+              <rect x="46" y="106" width="28" height="5" rx="2.5" fill="#ffe2ed"/>
+              <circle cx="60" cy="108.5" r="3.5" fill="#ff1f5a"/>
+              <!-- Legs & Shoes -->
+              <rect x="46" y="148" width="8" height="20" rx="3" fill="#fdd9ce"/>
+              <rect x="66" y="148" width="8" height="20" rx="3" fill="#fdd9ce"/>
+              <ellipse cx="50" cy="168" rx="6" ry="3.5" fill="#cf1a58"/>
+              <ellipse cx="70" cy="168" rx="6" ry="3.5" fill="#cf1a58"/>
+              <!-- Arms -->
+              <path d="M48,98 Q36,118 45,130" stroke="#fdd9ce" stroke-width="6.5" stroke-linecap="round" fill="none"/>
+              <path d="M72,98 Q84,118 75,130" stroke="#fdd9ce" stroke-width="6.5" stroke-linecap="round" fill="none"/>
+              <!-- Head & Face -->
+              <ellipse cx="60" cy="68" rx="23" ry="22" fill="url(#gSkin)"/>
+              <ellipse cx="46" cy="74" rx="4.5" ry="3" fill="#ff6b8b" opacity="0.6"/>
+              <ellipse cx="74" cy="74" rx="4.5" ry="3" fill="#ff6b8b" opacity="0.6"/>
+              <!-- Happy Eyes -->
+              <path d="M44,68 Q49,62 54,68" stroke="#2a0d1d" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              <path d="M66,68 Q71,62 76,68" stroke="#2a0d1d" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              <!-- Sweet Smile -->
+              <path d="M57,77 Q60,81 63,77" stroke="#d62258" stroke-width="2" stroke-linecap="round" fill="none"/>
+              <!-- Bangs & Ribbon -->
+              <path d="M38,60 Q60,40 82,60 Q86,76 80,86 Q72,70 60,70 Q48,70 40,86 Q34,76 38,60 Z" fill="url(#gHair)"/>
+              <circle cx="78" cy="52" r="5.5" fill="#ff2060"/>
+              <circle cx="78" cy="52" r="3" fill="#ffd5e2"/>
+            </svg>
+          </div>
+          <div class="char-name-tag">Deelan ✨</div>
+        </div>
+
+        <!-- Dynamic Clickable Starlight Items Container -->
+        <div class="interactive-stage-items" id="itemsStage1"></div>
+      </div>
+
+      <div class="whisper-banner" id="whisperStage1"></div>
+
+      <div class="stage-footer">
+        <button class="btn btn-primary btn-advance" id="btnNextStage1" disabled>
+          <span>Walk Forward 💫</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Screen 2: Stage 2 — The Moonlit Rose Bridge -->
+    <section class="story-screen" id="screenStage2">
+      <div class="stage-hud">
+        <span class="hud-step">Step 2 of 3</span>
+        <span class="hud-title">The Moonlit Rose Bridge 🌙</span>
+      </div>
+
+      <div class="quest-prompt glass-panel">
+        <p>Gently tap <strong>3 glowing rose clusters</strong> to clear the bridge steps.</p>
+        <div class="quest-counter" id="counterStage2">🌸 0 / 3 Petals Cleared</div>
+      </div>
+
+      <div class="stage-viewport" id="viewportStage2">
+        <div class="bridge-scenery">
+          <div class="bridge-arch"></div>
+          <div class="moon-glow"></div>
+        </div>
+
+        <div class="character-wrapper girl-stage2" id="charDeelanStage2">
+          <div class="char-sprite deelan-sprite">
+            <!-- Reuse Deelan Character SVG -->
+            <svg viewBox="0 0 120 180" class="svg-char">
+              <use href="#deelanSvgMaster"/>
+            </svg>
+          </div>
+          <div class="char-name-tag">Deelan 🌸</div>
+        </div>
+
+        <div class="interactive-stage-items" id="itemsStage2"></div>
+      </div>
+
+      <div class="whisper-banner" id="whisperStage2"></div>
+
+      <div class="stage-footer">
+        <button class="btn btn-primary btn-advance" id="btnNextStage2" disabled>
+          <span>Cross the Bridge 🌸</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Screen 3: Stage 3 — The Secret Garden Gate -->
+    <section class="story-screen" id="screenStage3">
+      <div class="stage-hud">
+        <span class="hud-step">Step 3 of 3</span>
+        <span class="hud-title">The Secret Garden Gate 🗝️</span>
+      </div>
+
+      <div class="quest-prompt glass-panel">
+        <p>Touch the <strong>Golden Heart Key</strong> to unlock his secret garden.</p>
+        <div class="quest-counter" id="counterStage3">🗝️ Ready to Unlock</div>
+      </div>
+
+      <div class="stage-viewport" id="viewportStage3">
+        <div class="gate-scenery">
+          <div class="gate-arch"></div>
+          <div class="gate-door gate-left" id="gateLeft"></div>
+          <div class="gate-door gate-right" id="gateRight"></div>
+        </div>
+
+        <div class="character-wrapper girl-stage3">
+          <div class="char-sprite deelan-sprite">
+            <svg viewBox="0 0 120 180" class="svg-char">
+              <use href="#deelanSvgMaster"/>
+            </svg>
+          </div>
+          <div class="char-name-tag">Deelan 🗝️</div>
+        </div>
+
+        <!-- Glowing Interactive Key -->
+        <div class="golden-key-item" id="goldenKeyItem" role="button" aria-label="Unlock Gate">
+          <div class="key-halo"></div>
+          <span class="key-icon">🗝️</span>
+          <span class="key-label">Touch the Heart Key</span>
+        </div>
+      </div>
+
+      <div class="whisper-banner" id="whisperStage3"></div>
+
+      <div class="stage-footer">
+        <button class="btn btn-primary btn-advance" id="btnNextStage3" disabled>
+          <span>Enter His Garden ✨</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Screen 4: Grand Climax — The Reunion & Bouquet of Red Roses -->
+    <section class="story-screen" id="screenClimax">
+      <div class="climax-atmosphere">
+        <div class="gazebo-arch"></div>
+        <div class="fairy-lights-garland"></div>
+        <div class="falling-petals-rain" id="fallingPetalsRain"></div>
+      </div>
+
+      <!-- Reunion Scene Stage -->
+      <div class="reunion-stage">
+        <!-- Deelan Approaching -->
+        <div class="climax-char-wrap char-deelan-climax" id="climaxGirl">
+          <div class="char-sprite deelan-sprite">
+            <svg viewBox="0 0 120 180" class="svg-char">
+              <use href="#deelanSvgMaster"/>
+            </svg>
+          </div>
+          <div class="char-name-tag">Deelan ❤️</div>
+        </div>
+
+        <!-- The Boy Offering Roses -->
+        <div class="climax-char-wrap char-boy-climax" id="climaxBoy">
+          <div class="char-sprite boy-sprite">
+            <svg viewBox="0 0 120 180" class="svg-char">
+              <defs>
+                <radialGradient id="bSkin" cx="50%" cy="40%" r="50%">
+                  <stop offset="0%" stop-color="#fff3ed"/>
+                  <stop offset="100%" stop-color="#f8cebd"/>
+                </radialGradient>
+                <linearGradient id="bHair" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#2c2a38"/>
+                  <stop offset="100%" stop-color="#14121b"/>
+                </linearGradient>
+                <linearGradient id="bCoat" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#1f2338"/>
+                  <stop offset="100%" stop-color="#10121d"/>
+                </linearGradient>
+              </defs>
+              <!-- Hair Back -->
+              <ellipse cx="60" cy="54" rx="25" ry="24" fill="url(#bHair)"/>
+              <!-- Coat / Body -->
+              <path d="M42,92 L78,92 L84,152 Q60,156 36,152 Z" fill="url(#bCoat)"/>
+              <!-- White Shirt Collar -->
+              <polygon points="54,92 60,110 66,92" fill="#ffffff"/>
+              <!-- Pants & Shoes -->
+              <rect x="42" y="150" width="14" height="24" rx="3" fill="#13141f"/>
+              <rect x="64" y="150" width="14" height="24" rx="3" fill="#13141f"/>
+              <ellipse cx="49" cy="173" rx="7" ry="4" fill="#090a10"/>
+              <ellipse cx="71" cy="173" rx="7" ry="4" fill="#090a10"/>
+              <!-- Arms presenting bouquet -->
+              <path d="M42,96 Q24,120 40,126" stroke="#f8cebd" stroke-width="7" stroke-linecap="round" fill="none"/>
+              <path d="M78,96 Q92,118 70,128" stroke="#f8cebd" stroke-width="7" stroke-linecap="round" fill="none"/>
+              <!-- Head & Face -->
+              <ellipse cx="60" cy="65" rx="22" ry="21" fill="url(#bSkin)"/>
+              <ellipse cx="47" cy="71" rx="4" ry="2.5" fill="#ff7d8d" opacity="0.45"/>
+              <ellipse cx="73" cy="71" rx="4" ry="2.5" fill="#ff7d8d" opacity="0.45"/>
+              <!-- Gentle Warm Eyes -->
+              <circle cx="51" cy="65" r="3.2" fill="#201a2c"/>
+              <circle cx="52.2" cy="63.8" r="1.1" fill="#ffffff"/>
+              <circle cx="69" cy="65" r="3.2" fill="#201a2c"/>
+              <circle cx="70.2" cy="63.8" r="1.1" fill="#ffffff"/>
+              <!-- Warm Smile -->
+              <path d="M56,74 Q60,78 64,74" stroke="#c03254" stroke-width="2" stroke-linecap="round" fill="none"/>
+              <!-- Stylish Hair Bangs -->
+              <path d="M38,58 Q60,35 82,56 Q85,70 80,72 Q72,55 60,60 Q48,55 40,72 Z" fill="url(#bHair)"/>
+            </svg>
+          </div>
+          
+          <!-- Lush Red Rose Bouquet -->
+          <div class="rose-bouquet-item" id="roseBouquet">
+            <div class="bouquet-glow"></div>
+            <div class="bouquet-flowers">
+              <span class="flower f1">🌹</span>
+              <span class="flower f2">🌹</span>
+              <span class="flower f3">🌹</span>
+              <span class="flower f4">🌹</span>
+              <span class="flower f5">🌹</span>
+            </div>
+            <div class="bouquet-ribbon">🎀</div>
+          </div>
+          <div class="char-name-tag">Waiting For You ❤️</div>
+        </div>
+      </div>
+
+      <!-- Grand Romantic Confession Dialogue Box -->
+      <div class="climax-dialogue glass-panel" id="climaxDialogue">
+        <div class="dialogue-header">
+          <span class="dialogue-badge">A Promise of Eternal Love</span>
+          <h3 class="dialogue-title">To Deelan, My Universe</h3>
+        </div>
+
+        <div class="dialogue-body">
+          <p class="dialogue-en">
+            "You found me, Deelan... But the truth is, my heart has been walking towards you since the very beginning.<br>
+            In a universe of billions, my soul found its only home in you.<br>
+            Every beat of my heart belongs only to you, today, tomorrow, and forever."
+          </p>
+          <p class="dialogue-ar">
+            "أنتِ النور لقلبي والوطن الوحيد لروحي يا ديلان.. أحبك دائماً وأبداً ❤️"
+          </p>
+        </div>
+
+        <div class="dialogue-footer">
+          <button class="btn btn-climax" id="btnAcceptRoses">
+            <span>Accept His Roses & Heart 🌹❤️</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================================
+       Persistent Floating Controls (Audio & Story Replay)
+       ========================================================================= -->
+  <div class="bottom-controls">
+    <!-- Replay / Story Mode Toggle -->
+    <button class="control-btn replay-btn" id="btnReplayStory" aria-label="Replay Romantic Story">
+      <span class="btn-icon">📖</span>
+      <span class="btn-label">Replay Love Story</span>
+    </button>
+
+    <!-- Romantic Music & Heartbeat Toggle -->
+    <button class="control-btn music-btn" id="musicToggleBtn" aria-label="Toggle Romantic Music & Heartbeat">
+      <span class="btn-icon">🎵</span>
+      <span id="musicBtnLabel">Play Romantic Music</span>
       <span class="sound-wave" id="soundWave">
         <span></span><span></span><span></span><span></span>
       </span>
     </button>
   </div>
 
-  <!-- Romantic Footer Note -->
-  <footer class="romantic-footer">
+  <!-- Romantic Footer Note (Visible in Heart Mode) -->
+  <footer class="romantic-footer" id="romanticFooter">
     <p>Tap anywhere to send unconditional love to Deelan ✨</p>
   </footer>
+
+  <!-- Master Deelan Character SVG Template -->
+  <svg style="display:none;" xmlns="http://www.w3.org/2000/svg">
+    <g id="deelanSvgMaster">
+      <!-- Hair Back -->
+      <path d="M35,55 Q20,95 28,135 Q60,150 92,135 Q100,95 85,55 Z" fill="#200a16"/>
+      <!-- Dress Body -->
+      <path d="M48,95 L72,95 L90,148 Q60,158 30,148 Z" fill="#cf1a58"/>
+      <ellipse cx="60" cy="148" rx="30" ry="5" fill="#fff0f5" opacity="0.85"/>
+      <rect x="46" y="106" width="28" height="5" rx="2.5" fill="#ffe2ed"/>
+      <circle cx="60" cy="108.5" r="3.5" fill="#ff1f5a"/>
+      <!-- Legs & Shoes -->
+      <rect x="46" y="148" width="8" height="20" rx="3" fill="#fdd9ce"/>
+      <rect x="66" y="148" width="8" height="20" rx="3" fill="#fdd9ce"/>
+      <ellipse cx="50" cy="168" rx="6" ry="3.5" fill="#cf1a58"/>
+      <ellipse cx="70" cy="168" rx="6" ry="3.5" fill="#cf1a58"/>
+      <!-- Arms -->
+      <path d="M48,98 Q36,118 45,130" stroke="#fdd9ce" stroke-width="6.5" stroke-linecap="round" fill="none"/>
+      <path d="M72,98 Q84,118 75,130" stroke="#fdd9ce" stroke-width="6.5" stroke-linecap="round" fill="none"/>
+      <!-- Head & Face -->
+      <ellipse cx="60" cy="68" rx="23" ry="22" fill="#fff4ef"/>
+      <ellipse cx="46" cy="74" rx="4.5" ry="3" fill="#ff6b8b" opacity="0.6"/>
+      <ellipse cx="74" cy="74" rx="4.5" ry="3" fill="#ff6b8b" opacity="0.6"/>
+      <!-- Happy Eyes -->
+      <path d="M44,68 Q49,62 54,68" stroke="#2a0d1d" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <path d="M66,68 Q71,62 76,68" stroke="#2a0d1d" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <!-- Sweet Smile -->
+      <path d="M57,77 Q60,81 63,77" stroke="#d62258" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <!-- Bangs & Ribbon -->
+      <path d="M38,60 Q60,40 82,60 Q86,76 80,86 Q72,70 60,70 Q48,70 40,86 Q34,76 38,60 Z" fill="#3b1d28"/>
+      <circle cx="78" cy="52" r="5.5" fill="#ff2060"/>
+      <circle cx="78" cy="52" r="3" fill="#ffd5e2"/>
+    </g>
+  </svg>
 
   <script src="script.js"></script>
 </body>

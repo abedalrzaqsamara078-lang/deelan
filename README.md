@@ -10,9 +10,17 @@ An ultra-smooth, poetic generative art piece crafted with unconditional love.
 
 ---
 
-## ✨ Features & Romantic Enhancements
+## ✨ Features & Romantic Story Game
 
-1. **Ultra-Smooth Gaussian Heartbeat Physics**:
+1. **🌹 Interactive Romantic Quest: "A Journey to You" (رحلة إلى قلبك)**:
+   - **Step 1: The Starlight Meadow**: Deelan walks forward under the starry sky, catching 3 glowing starlight hearts that chime with romantic whispers.
+   - **Step 2: The Moonlit Rose Bridge**: Deelan clears glowing rose blossoms from the steps to cross the enchanted moonlit bridge.
+   - **Step 3: The Secret Garden Gate**: Touching the Golden Heart Key unlocks his secret garden with celestial chime harmonies.
+   - **Grand Climax — The Reunion & Roses**: She reaches the candlelit gazebo where he is waiting for her under the stars, smiling warmly and extending a magnificent bouquet of fresh red roses, saying the ultimate romantic love confession:
+     > *"You found me, Deelan... But the truth is, my heart has been walking towards you since the very beginning. In a universe of billions, my soul found its only home in you. Every beat of my heart belongs only to you, today, tomorrow, and forever."*
+   - Accepting his roses erupts into celebration and seamlessly transitions into the eternal silky beating heart!
+
+2. **Ultra-Smooth Gaussian Heartbeat Physics**:
    - Continuous mathematical double-Gaussian pulse function ($C^\infty$ infinitely differentiable) for silky, organic heartbeat motion with zero stutter or harsh cuts.
    - Critically damped spring inertia for the fur fibers, making the hair tips flutter and sway like liquid silk.
 2. **Exquisite English Love Poetry & Flattery**:
