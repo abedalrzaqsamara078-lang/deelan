@@ -2,6 +2,9 @@
 
 An ultra-smooth, poetic generative art piece crafted with unconditional love.
 
+🌐 **Live Website Link (Send this to Deelan):**  
+👉 **[https://abedalrzaqsamara078-lang.github.io/deelan/](https://abedalrzaqsamara078-lang.github.io/deelan/)**
+
 > *"My Heart Beats Only For You."*  
 > *"In a universe of billions, my soul found its forever home in Deelan."*
 
